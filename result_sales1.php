@@ -18,14 +18,10 @@
   <div class="l-navbar" id="nav-bar">
     <nav class="nav">
       <div>
-        <a href="dashboard.php" class="nav_logo"> <i class='bx bx-layer nav_logo-icon'></i> <span class="nav_logo-name">CV-GFOXX</span> </a>
+        <a href="dashboardsales.php" class="nav_logo"> <i class='bx bx-layer nav_logo-icon'></i> <span class="nav_logo-name">CV-GFOXX</span> </a>
         <div class="nav_list">
-          <a href="dashboard.php" class="nav_link "> <i class='bx bx-grid-alt nav_icon'></i> <span class="nav_name">Dashboard</span> </a>
-          <a href="sales.php" class="nav_link active"> <i class='bx bx-cart nav_icon'></i> <span class="nav_name">Sales</span> </a>
-          <a href="products.php" class="nav_link"> <i class='bx bx-food-menu nav_icon'></i> <span class="nav_name">Products</span> </a>
-          <a href="suppliers.php" class="nav_link"> <i class='bx bx-user-pin nav_icon'></i> <span class="nav_name">Suppliers</span> </a>
-          <a href="customers.php" class="nav_link"> <i class='bx bx-user nav_icon'></i> <span class="nav_name">Customers</span> </a>
-          <a href="salesReport.php" class="nav_link"> <i class='bx bx-bar-chart-alt-2 nav_icon'></i> <span class="nav_name">Sales Report</span> </a>
+          <a href="dashboardsales.php" class="nav_link "> <i class='bx bx-grid-alt nav_icon'></i> <span class="nav_name">Dashboard</span> </a>
+          <a href="sales1.php" class="nav_link active"> <i class='bx bx-cart nav_icon'></i> <span class="nav_name">Sales</span> </a>
         </div>
       </div>
       <a href="login.php" class="nav_link"> <i class='bx bx-log-out nav_icon'></i> <span class="nav_name">SignOut</span> </a>
@@ -50,7 +46,7 @@
         <div class="col-lg-7">
           <h4 class="mt-1 mb-1">Sales Products</h4>
         </div>
-        <form class="col-lg-5" style="display: inline-flex;" action="result_sales.php" method="GET">
+        <form class="col-lg-5" style="display: inline-flex;" action="result_sales1.php" method="GET">
           <input type="text" name="product" class="form-control" id="" placeholder="Search product...">
           <button class="btn btn-primary " style="margin-left: 7px;" name="search">Search</button>
         </form>
@@ -70,10 +66,14 @@
           </thead>
           <tbody>
             <?php
-              require('config.php');
-              $query="SELECT * FROM products";
-              $result=mysqli_query($db_link, $query);
-              while ($row=mysqli_fetch_array($result)){
+            session_start();
+            require('config.php');
+            if(isset($_GET['search'])){   
+                $query = $_GET['product'];
+                $sql="select * from products where category like '%$query%' or name like '%$query%'";
+                $result = $db_link->query($sql);
+                if ($result->num_rows > 0){
+                    while($row = $result->fetch_array()){
             ?>
 
             <tr>
@@ -87,6 +87,8 @@
             </tr>
               
             <?php
+                    }
+                }
             }?>
 
           </tbody>

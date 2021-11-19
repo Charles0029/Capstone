@@ -15,23 +15,24 @@
      background-size: cover;
    }
  </style>
+
 </head>
 <body>
   <div class="logIn">
     <div class="card pt-3 pb-0">
       <div class="card-body">
         <h1 class="card-title">Login</h1>
-        <form action="">
+        <form action="loginprocess.php" method="POST">
           <div class="mb-3 mt-3">
             <label for="formGroupExampleInput" class="form-label">Username</label>
-            <input type="text" class="form-control" placeholder="...">
+            <input type="text" id="user" name="username" class="form-control" placeholder="Enter Username">
           </div>
           <div class="mb-3">
             <label for="formGroupExampleInput2" class="form-label">Password</label>
-            <input type="password" class="form-control" placeholder="...">
+            <input type="password" id="pass" name="password" class="form-control" placeholder="Enter Password">
           </div>
           <div class="col-12">
-            <button type="submit" class="btn btn btn-warning mt-2" style="width: 100%;">Sign in</button>
+            <button type="submit" class="btn btn btn-warning mt-2" style="width: 100%;" id="signin">Sign in</button>
           </div>
         </form>
         <div class="mt-3">
@@ -45,7 +46,10 @@
   </div>
   
 
- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+
 </body>
 </html>

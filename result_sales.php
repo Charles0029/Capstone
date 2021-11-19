@@ -70,10 +70,14 @@
           </thead>
           <tbody>
             <?php
-              require('config.php');
-              $query="SELECT * FROM products";
-              $result=mysqli_query($db_link, $query);
-              while ($row=mysqli_fetch_array($result)){
+            session_start();
+            require('config.php');
+            if(isset($_GET['search'])){   
+                $query = $_GET['product'];
+                $sql="select * from products where category like '%$query%' or name like '%$query%'";
+                $result = $db_link->query($sql);
+                if ($result->num_rows > 0){
+                    while($row = $result->fetch_array()){
             ?>
 
             <tr>
@@ -87,6 +91,8 @@
             </tr>
               
             <?php
+                    }
+                }
             }?>
 
           </tbody>
