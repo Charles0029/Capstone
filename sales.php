@@ -12,6 +12,13 @@
 </head>
 
 <body id="body-pd" class="bg-light">
+
+  <?php
+    session_start();
+    if(!isset($_SESSION['username'])){
+      header('location:login.php');
+      }
+  ?>
   <header class="header" id="header">
     <div class="header_toggle"> <i class='bx bx-menu' id="header-toggle"></i> </div>
   </header>
@@ -83,7 +90,10 @@
               <td> <?php echo $row['retail']; ?></td>
               <td> <?php echo $row['quantity']; ?></td>
               <td> <?php echo $row['supplier']; ?></td>
-              <td><button type="button" data-bs-toggle="modal" data-bs-target="#salesModal" class="btn btn-sm btn-danger">Pick Order</button></td>
+
+              <td><a href="process_sales.php?id=<?php echo md5($row['id']);?>" class="btn btn-sm btn-danger" >Pick Order</button></td>
+           
+                
             </tr>
               
             <?php
@@ -95,58 +105,9 @@
     </div>
   </div>
   
-   <!-- Modal -->
- <div class="modal fade" id="salesModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-   <div class="modal-content">
-    <div class="modal-header">
-     <h5 class="modal-title" id="exampleModalLabel">Transaction Form</h5>
-     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-    </div>
-    <div class="modal-body">
-     <form action="">
-      <div class="row">
-       <div class="col-md-12">
-        <label for="productCategory" class="form-label">Date Today</label>
-        <?php $date = new DateTime("now", new DateTimeZone('Asia/Manila')); ?>
-        <p>Today is <?php echo $date->format('l jS \of F Y'); ?></p>
-       </div>
-       <div class="col-md-12 mt-2">
-        <label for="productName" class="form-label">Name</label>
-        <input type="text" class="form-control" name="productName" placeholder="...">
-       </div>
-       <div class="col-md-12 mt-2">
-        <label for="productQty" class="form-label">Quantity</label>
-        <input type="number" class="form-control" name="productQty" placeholder="...">
-       </div>
-       <div class="col-md-12 mt-2">
-        <label for="productPurchaseAmount" class="form-label">Purchase Amount</label>
-        <input type="number" class="form-control" name="productPurchaseAmount" placeholder="...">
-       </div>
-       <div class="col-md-12 mt-2">
-        <label for="productRetail" class="form-label">Retail</label>
-        <input type="number" class="form-control" name="productRetail" placeholder="...">
-       </div>
-       <div class="col-md-12 mt-2">
-        <label for="productSupplier" class="form-label">Supplier</label>
-        <select name="productSupplier" class="form-select">
-         <option selected>Mangboks Betamax</option>
-         <option>Siomai tbp.</option>
-         <option>Stick Fish ball</option>
-         <option>Kakanin atb.</option>
-         <option>Street Quek Quek</option>
-        </select>
-       </div>
-       <div class="col-md-12 mt-4 mb-2" style="text-align: right;">
-        <button class="btn btn-primary">Add</button>
-        <button class="btn btn-danger">Cancel</button>
-       </div>
-      </div>
-     </form>
-    </div>
-   </div>
-  </div>
- </div>
+
+
+
 
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
