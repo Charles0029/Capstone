@@ -18,6 +18,14 @@
 
 </head>
 <body>
+  
+  <?php
+    session_start();
+    if(isset($_POST['username'])){
+      header('localhost:products.php');
+      }
+  ?>
+
   <div class="logIn">
     <div class="card pt-3 pb-0">
       <div class="card-body">

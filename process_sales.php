@@ -190,8 +190,6 @@
             $total = $amnt * $quant;
             $profit = $total - $quant * $purchase;
             }
-            
-
         ?>
 
   <form action="" method="POST">

@@ -12,6 +12,14 @@
 </head>
 
 <body id="body-pd" class="bg-light">
+
+  <?php
+    session_start();
+    if(!isset($_SESSION['username'])){
+      header('location:login.php');
+      }
+  ?>
+  
   <header class="header" id="header">
     <div class="header_toggle"> <i class='bx bx-menu' id="header-toggle"></i> </div>
   </header>

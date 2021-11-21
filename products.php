@@ -12,6 +12,20 @@
 </head>
 
 <body id="body-pd" class="bg-light">
+
+    <?php
+        session_start();
+        if(!isset($_SESSION['username'])){
+        header('location:login.php');
+        }
+    ?>
+
+    <?php
+        if($_SESSION['access']=='Salesperson'){
+        header('location:sales1.php');
+        }
+    ?>
+
  <header class="header" id="header">
   <div class="header_toggle"> <i class='bx bx-menu' id="header-toggle"></i> </div>
  </header>
@@ -68,23 +82,38 @@
        <th scope="col">Purchase</th>
        <th scope="col">Retail</th>
        <th scope="col">Supplier</th>
-       <th scope="col">Status</th>
        <th scope="col">Action</th>
+       <th scope="col">Status</th>
       </tr>
      </thead>
      <tbody>
-      <tr>
-       <td><img src="images/apple.jpg" alt=""></td>
-       <td>Finger Food</td>
-       <td>Beta max</td>
-       <td>100 pcs.</td>
-       <td>Php 3</td>
-       <td>Php 4</td>
-       <td>Mangboks betamax</td>
-       <td>FAST MOVING</td>
-       <td>
-        <button type="button" class="btn btn-sm btn-warning">Edit</button>
-        <button type="button" class="btn btn-sm btn-danger">Delete</button>
+         
+     <?php
+
+        require('config.php');
+        $query="SELECT * FROM products";
+        $quantity="SELECT quantity FROM products";
+        $result=mysqli_query($db_link, $query);
+        while ($row=mysqli_fetch_array($result)){?>
+
+        <tr>
+        <td><img src="images/apple.jpg" alt=""></td>
+        <td><?php echo $row['category']; ?></td>
+        <td><?php echo $row['name']; ?></td>
+        <td><?php echo $row['quantity']; ?></td>
+        <td><?php echo $row['purchase']; ?></td>
+        <td><?php echo $row['retail']; ?></td>
+        <td><?php echo $row['supplier']; ?></td>
+        <td>
+            <button type="button" class="btn btn-sm btn-warning">Edit</button>
+            <a href="delete_product.php?id=<?php echo md5($row['id']);?>" type="button" class="btn btn-sm btn-danger">Delete</a>
+        </td>
+        <td>
+    
+    <?php
+    }
+    ?>
+
        </td>
       </tr>
      </tbody>
@@ -105,11 +134,11 @@
      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
     <div class="modal-body">
-     <form action="">
+     <form action="add_product.php" method="POST">
       <div class="row">
        <div class="col-md-12">
         <label for="productCategory" class="form-label">Category</label>
-        <select name="productCategory" class="form-select">
+        <select name="category" class="form-select">
          <option selected>Health and Wellness</option>
          <option>Beauty and Cosmetics</option>
          <option>Weight Management</option>
@@ -117,28 +146,32 @@
        </div>
        <div class="col-md-12 mt-2">
         <label for="productName" class="form-label">Name</label>
-        <input type="text" class="form-control" name="productName" placeholder="...">
+        <input type="text" class="form-control" name="name" placeholder="Enter Name" required>
        </div>
        <div class="col-md-12 mt-2">
         <label for="productQty" class="form-label">Quantity</label>
-        <input type="number" class="form-control" name="productQty" placeholder="...">
+        <input type="number" class="form-control" name="quantity" placeholder="Enter Quantity" required>
        </div>
        <div class="col-md-12 mt-2">
         <label for="productPurchaseAmount" class="form-label">Purchase Amount</label>
-        <input type="number" class="form-control" name="productPurchaseAmount" placeholder="...">
+        <input type="number" class="form-control" name="purchase" placeholder="Enter Purchase Amount" required>
        </div>
        <div class="col-md-12 mt-2">
         <label for="productRetail" class="form-label">Retail</label>
-        <input type="number" class="form-control" name="productRetail" placeholder="...">
+        <input type="number" class="form-control" name="retail" placeholder="Enter Retail" required>
        </div>
        <div class="col-md-12 mt-2">
         <label for="productSupplier" class="form-label">Supplier</label>
-        <select name="productSupplier" class="form-select">
-         <option selected>Mangboks Betamax</option>
-         <option>Siomai tbp.</option>
-         <option>Stick Fish ball</option>
-         <option>Kakanin atb.</option>
-         <option>Street Quek Quek</option>
+        <select name="supplier" class="form-select">
+        <?php
+            $query="SELECT * FROM supplier";
+            $result=mysqli_query($db_link, $query);
+            while ($row=mysqli_fetch_array($result)){?>
+                
+            <option><?php echo $row['suppliername']; ?></option>
+                        
+            <?php
+            }?>
         </select>
        </div>
        <div class="col-md-12 mt-4 mb-2" style="text-align: right;">
@@ -150,6 +183,8 @@
    </div>
   </div>
  </div>
+
+
 
 
 

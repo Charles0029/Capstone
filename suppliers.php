@@ -12,6 +12,14 @@
 </head>
 
 <body id="body-pd" class="bg-light">
+
+    <?php
+        session_start();
+        if(!isset($_SESSION['username'])){
+            header('location:login.php');
+            }
+    ?>
+
  <header class="header" id="header">
   <div class="header_toggle"> <i class='bx bx-menu' id="header-toggle"></i> </div>
  </header>
@@ -69,17 +77,27 @@
       </tr>
      </thead>
      <tbody>
+     <?php
+        require('config.php');
+        $query="SELECT * FROM supplier";
+        $result=mysqli_query($db_link, $query);
+        while ($row=mysqli_fetch_array($result)){?>
+
       <tr>
-       <td>Mangboks betamax</td>
-       <td>Carl</td>
-       <td>Cavite</td>
-       <td>09876543213</td>
-       <td>N/A</td>
+       <td><?php echo $row['suppliername']; ?></td>
+       <td><?php echo $row['contactperson']; ?></td>
+       <td><?php echo $row['address']; ?></td>
+       <td><?php echo $row['contactno']; ?></td>
+       <td><?php echo $row['note']; ?></td>
        <td>
         <button type="button" class="btn btn-sm btn-warning">Edit</button>
-        <button type="button" class="btn btn-sm btn-danger">Delete</button>
+        <a href="delete_supplier.php?id=<?php echo md5($row['id']);?>" type="button" class="btn btn-sm btn-danger">Delete</a>
        </td>
       </tr>
+
+      <?php
+        }
+      ?>
      </tbody>
     </table>
    </div>
@@ -96,27 +114,27 @@
      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
     <div class="modal-body">
-     <form action="">
+     <form action="add_supplier.php" method="POST">
       <div class="row">
        <div class="col-md-12 mt-2">
         <label for="supplierName" class="form-label">Supplier Name</label>
-        <input type="text" class="form-control" name="supplierName" placeholder="...">
+        <input type="text" class="form-control" name="suppliername" placeholder="Enter Supplier">
        </div>
        <div class="col-md-12 mt-2">
         <label for="supplierContactPerson" class="form-label">Contact Person</label>
-        <input type="text" class="form-control" name="supplierContactPerson" placeholder="...">
+        <input type="text" class="form-control" name="contactperson" placeholder="Enter Person">
        </div>
        <div class="col-md-12 mt-2">
         <label for="supplierAddress" class="form-label">Address</label>
-        <input type="text" class="form-control" name="supplierAddress" placeholder="...">
+        <input type="text" class="form-control" name="address" placeholder="Enter Address">
        </div>
        <div class="col-md-12 mt-2">
         <label for="supplierContactNo" class="form-label">Contact No.</label>
-        <input type="text" class="form-control" name="supplierContactNo" placeholder="...">
+        <input type="text" class="form-control" name="contactno" placeholder="Enter Contact Number">
        </div>
        <div class="col-md-12 mt-2">
         <label for="supplierNote" class="form-label">Note</label>
-        <textarea class="form-control" placeholder="Leave a Note here" name="supplierNote" style="height: 100px"></textarea>
+        <textarea class="form-control" name="note " placeholder="Leave a Note here" name="supplierNote" style="height: 100px"></textarea>
        </div>
        <div class="col-md-12 mt-4 mb-2" style="text-align: right;">
         <button class="btn btn-primary">Add Supplier</button>

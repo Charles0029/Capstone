@@ -9,10 +9,9 @@
     $login="SELECT * FROM users WHERE username='$username' AND password='$password'";
     $result_login=mysqli_query($db_link, $login); 
     
-        if ($username && $password == "admin"){
+        if (@mysqli_num_rows($result_login)==1){
+            $_SESSION=mysqli_fetch_array($result_login,MYSQLI_ASSOC);
             header('location:dashboard.php');
-        }elseif($username && $password == "salesperson"){
-            header('location:dashboardsales.php');
         }
         else{?>
         <script type="text/javascript">

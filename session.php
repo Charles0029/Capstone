@@ -9,5 +9,4 @@
     $session_id = $_SESSION['userid']; 
     $session_id = $_SESSION['username']; 
     
-
 ?>

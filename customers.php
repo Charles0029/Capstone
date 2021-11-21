@@ -12,6 +12,14 @@
 </head>
 
 <body id="body-pd" class="bg-light">
+
+    <?php
+        session_start();
+        if(!isset($_SESSION['username'])){
+        header('location:login.php');
+        }
+    ?>
+
  <header class="header" id="header">
   <div class="header_toggle"> <i class='bx bx-menu' id="header-toggle"></i> </div>
  </header>
@@ -68,13 +76,22 @@
       </tr>
      </thead>
      <tbody>
-      <tr>
-       <td>Carl</td>
-       <td>09876543213</td>
-       <td>Cavite</td>
-       <td>N/A</td>
-       <td><button type="button" class="btn btn-sm btn-danger">Delete</button></td>
-      </tr>
+     <?php
+        require('config.php');
+        $query="SELECT * FROM customers";
+        $result=mysqli_query($db_link, $query);
+        while ($row=mysqli_fetch_array($result)){?>
+        <tr>
+        <td><?php echo $row['name']; ?></td>
+        <td><?php echo $row['contact']; ?></td>
+        <td><?php echo $row['address']; ?></td>
+        <td><?php echo $row['note']; ?></td>
+        <td><a href="delete_customer.php?id=<?php echo md5($row['id']);?>" type="button" class="btn btn-sm btn-danger">Delete</a></td>
+        </tr>
+
+    <?php
+    }
+    ?>
      </tbody>
     </table>
    </div>
@@ -91,23 +108,23 @@
      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
     <div class="modal-body">
-     <form action="">
+     <form action="add_customer.php" method="POST">
       <div class="row">
        <div class="col-md-12 mt-2">
         <label for="customerName" class="form-label">Name</label>
-        <input type="text" class="form-control" name="customerName" placeholder="...">
+        <input type="text" class="form-control" name="name" placeholder="Enter Name">
        </div>
        <div class="col-md-12 mt-2">
         <label for="customerContact" class="form-label">Contact</label>
-        <input type="text" class="form-control" name="customerContact" placeholder="...">
+        <input type="text" class="form-control" name="contact" placeholder="Enter Contact">
        </div>
        <div class="col-md-12 mt-2">
         <label for="customerAddress" class="form-label">Address</label>
-        <input type="text" class="form-control" name="customerAddress" placeholder="...">
+        <input type="text" class="form-control" name="address" placeholder="Enter Address">
        </div>
        <div class="col-md-12 mt-2">
         <label for="customerNote" class="form-label">Note</label>
-        <textarea class="form-control" placeholder="Leave a Note here" name="customerNote" style="height: 100px"></textarea>
+        <textarea class="form-control" name="note" placeholder="Leave a Note here" name="customerNote" style="height: 100px"></textarea>
        </div>
        <div class="col-md-12 mt-4 mb-2" style="text-align: right;">
         <button class="btn btn-primary">Add Product</button>
