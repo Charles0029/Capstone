@@ -90,7 +90,7 @@
               <td> <?php echo $row['retail']; ?></td>
               <td> <?php echo $row['quantity']; ?></td>
               <td> <?php echo $row['supplier']; ?></td>
-              <td><button name="getSales" type="button"   class="btn btn-sm btn-danger" >Pick Order</button></td>
+              <td><button type="button"   class="btn btn-sm btn-danger" >Pick Order</button></td>
             </tr>
               
             <?php
@@ -103,61 +103,59 @@
   </div>
   
 <!-- Modal -->
-<div class="modal fade" id="salesModal" tabindex="-1" >
- <div class="modal-dialog">
-  <div class="modal-content">
-   <div class="modal-header">
-    <h5 class="modal-title" id="exampleModalLabel">Transaction Form</h5>
-    <a href="sales.php" type="button" class="btn-close"  aria-label="Close"></a>
-   </div>
-   <div class="modal-body">
+<div class="modal" id="salesModal" tabindex="-1" >
 
-   <?php
-       
-        include 'config.php';
+  <?php
+    include 'config.php';
 
-        $id = $_GET['id'];
-        $view = "SELECT * from products where md5(id) = '$id'";
-        $result = $db_link->query($view);
-        $row = $result->fetch_assoc();
+    $id = $_GET['id'];
+    $view = "SELECT * from products where md5(id) = '$id'";
+    $result = $db_link->query($view);
+    $row = $result->fetch_assoc();
 
-        if(isset($_POST['update'])){
+    if(isset($_POST['update'])){
 
-            $ID = $_GET['id'];
-            
-            $view1 = "SELECT quantity from products where md5(id) = '$id'";
-            $result1 = $db_link->query($view);
-            $row2 = $result->fetch_assoc();
-            
-            $quant = $_POST['quant'];
-            $quantity=$_POST['quantity'];
-            $dates=$_POST['dates'];
-           
-            
-            $customers=$_POST['customers'];
-            $category=$_POST['category'];
-            $name=$_POST['name'];
-            $amount=$_POST['amount'];
-            $quant=$_POST['quant'];
-            $total=$_POST['total'];
-            $tendered=$_POST['tendered'];
-            $changed=$_POST['changed'];
-            $prof = $_POST['profit'];
-            $tracking = $_POST['tracking'];
+      $ID = $_GET['id'];
 
-            $insert1 = "UPDATE products set quantity = quantity - '$quant' where md5(id) = '$ID'";
-            $insert = "INSERT INTO sales(dates,customers,category,name,amnt,quantity,total,profit,tendered,changed,tracking) VALUES('$dates','$customers','$category','$name','$amount','$quant','$total','$prof','$tendered','$changed',$tracking)" or die("error".mysqli_errno($db_link));
-            $result=mysqli_query($db_link,$insert);
-            if($db_link->query($insert1)== TRUE){
-              header('location:sales.php');		
-            }
-            
-            $db_link->close();
+      $view1 = "SELECT quantity from products where md5(id) = '$id'";
+      $result1 = $db_link->query($view);
+      $row2 = $result->fetch_assoc();
+
+      $quantity=$_POST['quantity'];
+      $quant = $_POST['quant'];
+      $dates=$_POST['dates'];
+
+
+      $customers=$_POST['customers'];
+      $category=$_POST['category'];
+      $name=$_POST['name'];
+      $amount=$_POST['amount'];
+      $quant=$_POST['quant'];
+      $total=$_POST['total'];
+      $tendered=$_POST['tendered'];
+      $changed=$_POST['changed'];
+      $prof = $_POST['profit'];
+      $tracking = $_POST['tracking'];
+
+      $insert1 = "UPDATE products set quantity = quantity - '$quant' where md5(id) = '$ID'";
+      $insert = "INSERT INTO sales(dates,customers,category,name,amnt,quantity,total,profit,tendered,changed,tracking) VALUES('$dates','$customers','$category','$name','$amount','$quant','$total','$prof','$tendered','$changed',$tracking)" or die("error".mysqli_errno($db_link));
+      $result=mysqli_query($db_link,$insert);
+        if($db_link->query($insert1)== TRUE){
+            header('location:sales.php');			
         }
 
-    ?>
+      $db_link->close();
+      }
+     
+  ?>
 
-
+  <div class="modal-dialog">
+    <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="exampleModalLabel">Transaction Form</h5>
+      <a href="sales.php" type="button" class="btn-close"  aria-label="Close"></a>
+    </div>
+    <div class="modal-body">
     <?php
   
         if(isset($_POST['sub']))
@@ -206,22 +204,18 @@
 
       <div class="col-md-12 mt-2">
        <label for="customer" class="form-label">Customers</label>
-       <select name="customers" class="form-select" value="<?php echo @$customers?>" readonly>
+       <select name="customers" class="form-select" readonly>
 
        <?php
-
-         require('config.php');
-         $query = "SELECT * FROM customers";
-         $result = mysqli_query($db_link, $query);
-         while ($row1=mysqli_fetch_array($result)){
-         
-       ?>
-
-         <option value=""><?php echo $row1['name']; ?></option>
-
-         <?php
-         }
-       ?>
+        require('config.php');
+        $query="SELECT * FROM customers";
+        $result=mysqli_query($db_link, $query);
+        while ($row1=mysqli_fetch_array($result)){?>
+          
+        <option><?php echo $row1['name']; ?></option>
+                    
+        <?php
+        }?>
 
        </select>
          
@@ -251,7 +245,7 @@
       </div>
       <div class="col-md-12 mt-2">
        <label class="form-label">Profit</label>
-         <input type="text" class="form-control" name="profit" value="<?php echo @$profit ?>"  readonly>
+         <input type="text" class="form-control" name="profit" value="<?php echo @$profit ?>" readonly>
       </div>
       <div class="col-md-12 mt-2">
        <label class="form-label">Cash Given <button class="btn btn-secondary" name="sub" id="btncalc">Compute</button></label>
@@ -259,15 +253,15 @@
       </div>
       <div class="col-md-12 mt-2">
        <label class="form-label">Return Change</label>
-         <input type="text" class="form-control" name="changed" value="<?php echo @$change ?>"  readonly>
+         <input type="text" class="form-control" name="changed" value="<?php echo @$change ?>" readonly>
       </div>
       <div class="col-md-12 mt-2">
        <label class="form-label">Tracking Number</label>
-         <input type="text" class="form-control" name="tracking" value="<?php echo @$tracking ?>" placeholder="Tracking Number" >
+         <input type="text" class="form-control" name="tracking" value="<?php echo @$tracking ?>" placeholder="Tracking Number">
       </div>
       <div class="col-md-12 mt-4 mb-2" style="text-align: right;">
-       <input type="Submit" class="btn btn-primary" name="update" value="Add">
-       <a href="sales.php" class="btn btn-danger">Cancel</a>
+        <button type="Submit" class="btn btn-primary" name="update" >Add</button>
+        <a href="sales.php" class="btn btn-danger">Cancel</a>
       </div>
      </div>
     </form>
@@ -275,9 +269,6 @@
   </div>
  </div>
 </div>
-
-
-
 
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
