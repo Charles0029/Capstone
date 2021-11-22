@@ -12,14 +12,6 @@
 </head>
 
 <body id="body-pd" class="bg-light">
-
-    <?php
-        session_start();
-        if(!isset($_SESSION['username'])){
-            header('location:login.php');
-            }
-    ?>
-
  <header class="header" id="header">
   <div class="header_toggle"> <i class='bx bx-menu' id="header-toggle"></i> </div>
  </header>
@@ -59,13 +51,13 @@
      <h4 class="mt-1 mb-1">Supplier Information Table</h4>
     </div>
     <div class="col-lg-5" style="display: inline-flex;">
-     <input type="text" class="form-control" id="" placeholder="Search product...">
-     <button class="btn btn-primary " style="margin-left: 7px;">Search</button>
+     <input type="text" class="form-control" id="searchSuppliers" onkeyup="search(2)" placeholder="Search product...">
+     <span class="input-group-text bg-primary text-white"><i class='bx bx-search-alt-2 nav_logo-icon'></i></span>
     </div>
    </div>
 
    <div class="tableData overflow-auto">
-    <table class="table mt-4 table-hover">
+    <table class="table mt-4 table-hover" id="myTable">
      <thead class="table-dark">
       <tr>
        <th scope="col">Supplier Name</th>
@@ -77,29 +69,75 @@
       </tr>
      </thead>
      <tbody>
-     <?php
-        require('config.php');
-        $query="SELECT * FROM supplier";
-        $result=mysqli_query($db_link, $query);
-        while ($row=mysqli_fetch_array($result)){?>
-
-      <tr>
-       <td><?php echo $row['suppliername']; ?></td>
-       <td><?php echo $row['contactperson']; ?></td>
-       <td><?php echo $row['address']; ?></td>
-       <td><?php echo $row['contactno']; ?></td>
-       <td><?php echo $row['note']; ?></td>
-       <td>
-        <button type="button" class="btn btn-sm btn-warning">Edit</button>
-        <a href="delete_supplier.php?id=<?php echo md5($row['id']);?>" type="button" class="btn btn-sm btn-danger">Delete</a>
-       </td>
-      </tr>
-
       <?php
-        }
+      require('config.php');
+      $query = "SELECT * FROM supplier";
+      $result = mysqli_query($db_link, $query);
+      while ($row = mysqli_fetch_array($result)) {
       ?>
+       <tr>
+        <td><?php echo $row['suppliername']; ?></td>
+        <td><?php echo $row['contactperson']; ?></td>
+        <td><?php echo $row['address']; ?></td>
+        <td><?php echo $row['contactno']; ?></td>
+        <td><?php echo $row['note']; ?></td>
+        <td>
+         <button type="button" data-bs-toggle="modal" data-bs-target="#edit<?php echo $row['id']; ?>" class="btn btn-sm btn-warning">Edit</button>
+         <a type="button" class="btn btn-sm btn-danger" href="functions.php?deleteSupplier=<?php echo $row["id"] ?>">Delete</a>
+        </td>
+       </tr>
+
+       <!--edit Form Modal -->
+       <div class="modal fade" id="edit<?php echo $row['id']; ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+         <div class="modal-content">
+          <div class="modal-header">
+           <h5 class="modal-title" id="exampleModalLabel">Edit Form</h5>
+           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+           <form action="functions.php" method="POST">
+            <div class="row">
+             <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
+             <div class="input-group mt-2">
+              <div class="input-group-text">Supplier Name</div>
+              <input type="text" name="supplierName" class="form-control" value="<?php echo $row['suppliername']; ?>" required>
+             </div>
+             <div class="input-group mt-2">
+              <div class="input-group-text">Contact Person</div>
+              <input type="text" name="contactperson" class="form-control" value="<?php echo $row['contactperson']; ?>" required>
+             </div>
+             <div class="input-group mt-2">
+              <div class="input-group-text">Address</div>
+              <input type="text" name="address" class="form-control" value="<?php echo $row['address']; ?>" required>
+             </div>
+             <div class="input-group mt-2">
+              <div class="input-group-text">Contact No.</div>
+              <input type="text" name="contactno" class="form-control" value="<?php echo $row['contactno']; ?>" required>
+             </div>
+             <div class="mt-3">
+              <label for="exampleFormControlTextarea1" class="form-label">Note</label>
+              <textarea class="form-control" name="note" rows="3"><?php echo $row['note']; ?></textarea>
+             </div>
+             <div class="col-md-12 mt-4 mb-2" style="text-align: right;">
+              <button type="submit" name="updateFormSupplier" class="btn btn-success">Update</button>
+             </div>
+            </div>
+           </form>
+          </div>
+         </div>
+        </div>
+       </div>
+      <?php }; ?>
      </tbody>
     </table>
+   </div>
+   <div class="no-result-div mt-4 text-center" id="no-search">
+    <div class="div">
+     <img src="images/search.svg" alt="">
+     <h4 class="mt-3">Search not found...</h4>
+     <p>Search for names, prices, category, supplier and etc.</p>
+    </div>
    </div>
    <button type="button" class="btn btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#exampleModal">Add Supplier <i class='bx bx-user nav_icon' style="transform: translateY(3px);"></i></button>
   </div>
@@ -114,30 +152,30 @@
      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
     <div class="modal-body">
-     <form action="add_supplier.php" method="POST">
+     <form action="functions.php" method="POST">
       <div class="row">
        <div class="col-md-12 mt-2">
         <label for="supplierName" class="form-label">Supplier Name</label>
-        <input type="text" class="form-control" name="suppliername" placeholder="Enter Supplier">
+        <input type="text" class="form-control" name="supplierName" placeholder="..." required>
        </div>
        <div class="col-md-12 mt-2">
         <label for="supplierContactPerson" class="form-label">Contact Person</label>
-        <input type="text" class="form-control" name="contactperson" placeholder="Enter Person">
+        <input type="text" class="form-control" name="supplierContactPerson" placeholder="..." required>
        </div>
        <div class="col-md-12 mt-2">
         <label for="supplierAddress" class="form-label">Address</label>
-        <input type="text" class="form-control" name="address" placeholder="Enter Address">
+        <input type="text" class="form-control" name="supplierAddress" placeholder="..." required>
        </div>
        <div class="col-md-12 mt-2">
         <label for="supplierContactNo" class="form-label">Contact No.</label>
-        <input type="text" class="form-control" name="contactno" placeholder="Enter Contact Number">
+        <input type="text" class="form-control" name="supplierContactNo" placeholder="..." required>
        </div>
        <div class="col-md-12 mt-2">
         <label for="supplierNote" class="form-label">Note</label>
-        <textarea class="form-control" name="note " placeholder="Leave a Note here" name="supplierNote" style="height: 100px"></textarea>
+        <textarea class="form-control" placeholder="Leave a Note here" name="supplierNote" style="height: 100px" required></textarea>
        </div>
        <div class="col-md-12 mt-4 mb-2" style="text-align: right;">
-        <button class="btn btn-primary">Add Supplier</button>
+        <button class="btn btn-primary" type="submit" name="addSupplier">Add Supplier</button>
        </div>
       </div>
      </form>

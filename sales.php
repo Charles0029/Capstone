@@ -11,13 +11,10 @@
   <title>Sales</title>
 </head>
 
+<?php
+  session_start();
+?>
 <body id="body-pd" class="bg-light">
-  <?php
-    session_start();
-    if(!isset($_SESSION['username'])){
-      header('location:login.php');
-      }
-  ?>
   <header class="header" id="header">
     <div class="header_toggle"> <i class='bx bx-menu' id="header-toggle"></i> </div>
   </header>
@@ -56,13 +53,13 @@
         <div class="col-lg-7">
           <h4 class="mt-1 mb-1">Sales Products</h4>
         </div>
-        <form class="col-lg-5" style="display: inline-flex;" action="result_sales.php" method="GET">
-          <input type="text" name="product" class="form-control" id="" placeholder="Search product...">
-          <button class="btn btn-primary " style="margin-left: 7px;" name="search">Search</button>
-        </form>
+        <div class="col-lg-5" style="display: inline-flex;">
+          <input type="text" class="form-control" id="searchSales" onkeyup="search(0)" placeholder="Search product...">
+          <span class="input-group-text bg-primary text-white"><i class='bx bx-search-alt-2 nav_logo-icon'></i></span>
+        </div>
       </div>
       <div class="tableData overflow-auto">
-        <table class="table mt-4 table-hover">
+        <table class="table mt-4 table-hover" id="myTable">
           <thead class="table-dark">
             <tr>
               <th scope="col">Image</th>
@@ -76,34 +73,160 @@
           </thead>
           <tbody>
             <?php
-              require('config.php');
-              $query="SELECT * FROM products";
-              $result=mysqli_query($db_link, $query);
-              while ($row=mysqli_fetch_array($result)){
+            require('config.php');
+            $query = "SELECT * FROM products";
+            $result = mysqli_query($db_link, $query);
+            while ($row = mysqli_fetch_array($result)) {
             ?>
 
-            <tr>
-              <td><img src="images/apple.jpg" alt=""></td>
-              <td> <?php echo $row['category']; ?></td>
-              <td> <?php echo $row['name']; ?></td>
-              <td> <?php echo $row['retail']; ?></td>
-              <td> <?php echo $row['quantity']; ?></td>
-              <td> <?php echo $row['supplier']; ?></td>
-
-              <td><a href="process_sales.php?id=<?php echo md5($row['id']);?>" class="btn btn-sm btn-danger" >Pick Order</button></td>
-           
-                
-            </tr>
-              
             <?php
-            }?>
+                if ($row['quantity'] <= 20){
+                  $getname = $row['name'];
+                  $prompt = 'the system detect '." "."'".$row['name']."'"." "."meet the critical stock level"; 
+                  $quant = $row['quantity'];
+                  $_SESSION['name'] = $prompt;
+                  $_SESSION['quants'] = $quant;
+                  $computation = 100 - (int)$quant;
+                  $results = (int)$computation + (int)$quant;
+                  $_SESSION['result'] = $results;
 
+                  $db_link->query($query);
+                  $update_critical_stock = "UPDATE products SET quantity = $results WHERE name = '$getname'";
+                  if ($db_link->query($update_critical_stock)== TRUE) {
+                    echo "Record updated successfully please refresh the page";
+                  } else {
+                    echo "Error updating record: " . $conn->error;
+                  }
+                  include 'sendemail.php';
+                  echo"<br>";
+                }
+                else{
+                  echo('No detection');
+                } 
+            ?>
+
+              <tr>
+                <td><a href="#" class="pop"><img src="uploads/<?= $row['img_url'] ?>" alt=""></a></td>
+                <td><?php echo $row['category']; ?></td>
+                <td><?php echo $row['name']; ?></td>
+                <td>Php <?php echo $row['retail']; ?></td>
+                <td><?php echo $row['quantity']; ?> pcs.</td>
+                <td><?php echo $row['supplier']; ?></td>
+                <td><button type="button" data-bs-toggle="modal" data-bs-target="#salesModal<?php echo $row['id']; ?>" class="btn btn-sm btn-danger">Pick Order</button></td>
+              </tr>
+
+              <!--Form Modal -->
+              <div class="modal fade" id="salesModal<?php echo $row['id']; ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">Transaction Form</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <form action="functions.php" method="POST">
+                        <div class="row">
+                          <div class="col-md-12">
+                            <p><b>Date:</b> <?php echo $date->format('Y/m/d'); ?></p>
+                            <input type="hidden" name="curDate" value="<?php echo $date->format('Y/m/d'); ?>">
+                            <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
+                          </div>
+                          <div class="input-group">
+                            <div class="input-group-text">Customers</div>
+                            <select name="customers" class="form-select">
+                              <?php
+                              $queryCus = "SELECT * FROM customers";
+                              $resultCus = mysqli_query($db_link, $queryCus);
+                              while ($rowCus = mysqli_fetch_array($resultCus)) { ?>
+                                <option><?php echo $rowCus['name']; ?></option>
+                              <?php
+                              } ?>
+                            </select>
+                          </div>
+                          <div class="col-md-12 mt-2">
+                            <hr>
+                            <p><b>Category:</b> <?php echo $row['category']; ?></p>
+                            <input type="hidden" name="category" value="<?php echo $row['category']; ?>">
+                          </div>
+                          <div class="col-md-12">
+                            <p><b>Product Name:</b> <?php echo $row['name']; ?></p>
+                            <input type="hidden" name="pName" value="<?php echo $row['name']; ?>">
+                          </div>
+                          <div class="col-md-12">
+                            <p><b>Quantity Left:</b> <?php echo $row['quantity']; ?></p>
+                            <input type="hidden" name="curQty" value="<?php echo $row['quantity']; ?>">
+                          </div>
+                          <div class="col-md-12">
+                            <p><b>Retail:</b> Php <?php echo $row['retail']; ?></p>
+                            <input type="hidden" name="retail" value="<?php echo $row['retail']; ?>">
+                          </div>
+                          <div class="input-group">
+                            <div class="input-group-text">Quantity</div>
+                            <input type="number" min="0" max="<?php echo $row['quantity']; ?>" name="qty" class="form-control" id="qty<?php echo $row['id']; ?>" onkeyup="calculateSales(<?php echo $row['retail']; ?>, <?php echo $row['id']; ?>)" placeholder="0" required>
+                          </div>
+                          <div class="input-group mt-2">
+                            <div class="input-group-text">Total Amount</div>
+                            <input type="number" min="0" name="ta" id="ta<?php echo $row['id']; ?>" class="form-control" placeholder="0" readonly style="background-color: #fff;">
+                          </div>
+                          <div class="input-group mt-2">
+                            <div class="input-group-text">Profit</div>
+                            <input type="number" min="0" name="profit" class="form-control" placeholder="0" readonly style="background-color: #fff;">
+                          </div>
+                          <div class="input-group mt-2">
+                            <div class="input-group-text">Cash Given</div>
+                            <input type="number" name="tendered" min="" id="cg<?php echo $row['id']; ?>" onkeyup="calculateChangeSales(<?php echo $row['id']; ?>)" class="form-control" placeholder="0" required>
+                          </div>
+                          <div class="input-group mt-2">
+                            <div class="input-group-text">Change</div>
+                            <input type="number" name="change" id="change<?php echo $row['id']; ?>" class="form-control" placeholder="0" readonly style="background-color: #fff;">
+                          </div>
+                          <div class="input-group mt-2">
+                            <div class="input-group-text">Tracking No.</div>
+                            <input type="text" name="tn" id="tn<?php echo $row['id']; ?>" class="form-control" placeholder="..." required>
+                          </div>
+                          <div class="col-md-12 mt-4 mb-2" style="text-align: right;">
+                            <button type="submit" name="submitSaleForm" class="btn btn-primary">Add Form</button>
+                            <button class="btn btn-secondary" onclick="clearr(<?php echo $row['id']; ?>)">Clear</button>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <?php
+            } ?>
           </tbody>
         </table>
       </div>
+      <div class="no-result-div mt-4 text-center" id="no-search">
+        <div class="div">
+          <img src="images/search.svg" alt="">
+          <h4 class="mt-3">Search not found...</h4>
+          <p>Search for names, prices, category, supplier and etc.</p>
+        </div>
+      </div>
     </div>
   </div>
-  
+
+  <!-- image modal -->
+  <div class="modal fade" id="imagemodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Modal Image</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <img src="" class="imagepreview" style="width: 100%;">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="js/app.js"></script>

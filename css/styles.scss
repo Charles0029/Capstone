@@ -17,6 +17,7 @@
   }
 }
 
+// dashboard - nav
 :root {
   --header-height: 3rem;
   --nav-width: 68px;
@@ -27,7 +28,7 @@
   --normal-font-size: 1rem;
   --z-fixed: 100;
 }
-// dashboard - nav
+
 *,
 ::before,
 ::after {
@@ -139,7 +140,7 @@ a {
   font-size: 1.25rem;
 }
 
-.show {
+.showNav {
   left: 0;
 }
 
@@ -161,7 +162,7 @@ a {
 }
 
 .height-100 {
-  height: 90vh;
+  height: 100vh;
 }
 
 // table style
@@ -171,6 +172,17 @@ a {
     img {
       width: 50px;
     }
+  }
+}
+
+//search div
+.no-result-div {
+  display: none;
+  img {
+    width: 200px;
+  }
+  p {
+    opacity: 70%;
   }
 }
 

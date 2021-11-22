@@ -12,18 +12,6 @@
 </head>
 
 <body id="body-pd" class="bg-light">
-  <?php
-    session_start();
-    if(!isset($_SESSION['username'])){
-      header('location:login.php');
-      }
-  ?>
-
-  <?php
-    if($_SESSION['access']=='Salesperson'){
-      header('location:sales1.php');
-      }
-  ?>
   <header class="header" id="header">
     <div class="header_toggle"> <i class='bx bx-menu' id="header-toggle"></i> </div>
   </header>
@@ -47,7 +35,7 @@
   <div class="height-100">
     <div class="row">
       <div class="col-md">
-        <h1><b>Hello Admin! 🖐</b></h1>
+        <h1><b>Hello Admin! 😎</b></h1>
         <?php $date = new DateTime("now", new DateTimeZone('Asia/Manila')); ?>
         <p>Today is <?php echo $date->format('l jS \of F Y'); ?></p>
       </div>
