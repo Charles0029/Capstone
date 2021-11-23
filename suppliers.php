@@ -101,26 +101,27 @@
              <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
              <div class="input-group mt-2">
               <div class="input-group-text">Supplier Name</div>
-              <input type="text" name="supplierName" class="form-control" value="<?php echo $row['suppliername']; ?>" required>
+              <input type="text" name="supplierName" id="sName<?php echo $row['id']; ?>" class="form-control" value="<?php echo $row['suppliername']; ?>" required>
              </div>
              <div class="input-group mt-2">
               <div class="input-group-text">Contact Person</div>
-              <input type="text" name="contactperson" class="form-control" value="<?php echo $row['contactperson']; ?>" required>
+              <input type="text" name="contactperson" id="sCp<?php echo $row['id']; ?>" class="form-control" value="<?php echo $row['contactperson']; ?>" required>
              </div>
              <div class="input-group mt-2">
               <div class="input-group-text">Address</div>
-              <input type="text" name="address" class="form-control" value="<?php echo $row['address']; ?>" required>
+              <input type="text" name="address" id="sAddress<?php echo $row['id']; ?>" class="form-control" value="<?php echo $row['address']; ?>" required>
              </div>
              <div class="input-group mt-2">
               <div class="input-group-text">Contact No.</div>
-              <input type="text" name="contactno" class="form-control" value="<?php echo $row['contactno']; ?>" required>
+              <input type="text" name="contactno" id="sCn<?php echo $row['id']; ?>" class="form-control" value="<?php echo $row['contactno']; ?>" required>
              </div>
              <div class="mt-3">
               <label for="exampleFormControlTextarea1" class="form-label">Note</label>
-              <textarea class="form-control" name="note" rows="3"><?php echo $row['note']; ?></textarea>
+              <textarea class="form-control" id="sNote<?php echo $row['id']; ?>" name="note" rows="3"><?php echo $row['note']; ?></textarea>
              </div>
              <div class="col-md-12 mt-4 mb-2" style="text-align: right;">
               <button type="submit" name="updateFormSupplier" class="btn btn-success">Update</button>
+              <button class="btn btn-secondary" onclick="clearSupplierFormUpdate(<?php echo $row['id']; ?>)">Clear</button>
              </div>
             </div>
            </form>
@@ -156,26 +157,27 @@
       <div class="row">
        <div class="col-md-12 mt-2">
         <label for="supplierName" class="form-label">Supplier Name</label>
-        <input type="text" class="form-control" name="supplierName" placeholder="..." required>
+        <input type="text" class="form-control" id="sName" name="supplierName" placeholder="..." required>
        </div>
        <div class="col-md-12 mt-2">
         <label for="supplierContactPerson" class="form-label">Contact Person</label>
-        <input type="text" class="form-control" name="supplierContactPerson" placeholder="..." required>
+        <input type="text" class="form-control" id="sCp" name="supplierContactPerson" placeholder="..." required>
        </div>
        <div class="col-md-12 mt-2">
         <label for="supplierAddress" class="form-label">Address</label>
-        <input type="text" class="form-control" name="supplierAddress" placeholder="..." required>
+        <input type="text" class="form-control" id="sAddress" name="supplierAddress" placeholder="..." required>
        </div>
        <div class="col-md-12 mt-2">
         <label for="supplierContactNo" class="form-label">Contact No.</label>
-        <input type="text" class="form-control" name="supplierContactNo" placeholder="..." required>
+        <input type="text" class="form-control" id="sCn" name="supplierContactNo" placeholder="..." required>
        </div>
        <div class="col-md-12 mt-2">
         <label for="supplierNote" class="form-label">Note</label>
-        <textarea class="form-control" placeholder="Leave a Note here" name="supplierNote" style="height: 100px" required></textarea>
+        <textarea class="form-control" id="cNote" placeholder="Leave a Note here" name="supplierNote" style="height: 100px" required></textarea>
        </div>
        <div class="col-md-12 mt-4 mb-2" style="text-align: right;">
         <button class="btn btn-primary" type="submit" name="addSupplier">Add Supplier</button>
+        <button class="btn btn-secondary" onclick="clearSupplierForm()">Clear</button>
        </div>
       </div>
      </form>

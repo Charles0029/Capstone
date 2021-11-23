@@ -1,17 +1,24 @@
 # capstone
 
 #ADMIN
-#sales - remaining work email integration
-#sales product - remaining work STATUS
-#suppliers completed /
-#customers completed /
-#sales report - not started
+sales
 
-\*please add clear button in all add forms,
-add product form, add supplier form, and add
-customer form
+remaining work email integration
+calculate profit -- ok
+fix the auto compute -- ok
 
-do it using JS, use the clearr() function.
+sales product
+STATUS column -- not ok
+added all forms clear btn -- ok
+
+suppliers completed /
+added all forms clear btn -- ok
+
+customers completed
+added all forms clear btn -- ok
+
+sales report
+not started
 
 #SALESPERSON
 ...

@@ -199,23 +199,23 @@
               </div>
               <div class="col-md-12 mt-2">
                 <label for="img" class="form-label">Product Image</label>
-                <input type="file" class="form-control" name="my_image" required>
+                <input type="file" class="form-control" id="pImg" name="my_image" required>
               </div>
               <div class="col-md-12 mt-2">
                 <label for="productName" class="form-label">Name</label>
-                <input type="text" class="form-control" name="productName" placeholder="...">
+                <input type="text" class="form-control" id="pName" name="productName" placeholder="...">
               </div>
               <div class="col-md-12 mt-2">
                 <label for="productQty" class="form-label">Quantity</label>
-                <input type="number" min="20" class="form-control" name="productQty" placeholder="20">
+                <input type="number" min="20" class="form-control" id="pQty" name="productQty" placeholder="20">
               </div>
               <div class="col-md-12 mt-2">
                 <label for="productPurchaseAmount" class="form-label">Purchase Amount</label>
-                <input type="number" min="0" class="form-control" name="productPurchaseAmount" placeholder="0">
+                <input type="number" min="0" class="form-control" id="pPa" name="productPurchaseAmount" placeholder="0">
               </div>
               <div class="col-md-12 mt-2">
                 <label for="productRetail" class="form-label">Retail</label>
-                <input type="number" min="0" class="form-control" name="productRetail" placeholder="0">
+                <input type="number" min="0" class="form-control" id="pRetail" name="productRetail" placeholder="0">
               </div>
               <div class="col-md-12 mt-2">
                 <label for="productSupplier" class="form-label">Supplier</label>
@@ -229,6 +229,7 @@
               </div>
               <div class="col-md-12 mt-4 mb-2" style="text-align: right;">
                 <button type="submit" name="addProduct" value="Upload" class="btn btn-primary">Add Product</button>
+                <button class="btn btn-secondary" onclick="clearProductsForm()">Clear</button>
               </div>
             </div>
           </form>

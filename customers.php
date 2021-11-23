@@ -109,22 +109,23 @@
       <div class="row">
        <div class="col-md-12 mt-2">
         <label for="customerName" class="form-label">Name</label>
-        <input type="text" class="form-control" name="customerName" placeholder="..." required>
+        <input type="text" class="form-control" id="cName" name="customerName" placeholder="..." required>
        </div>
        <div class="col-md-12 mt-2">
         <label for="customerContact" class="form-label">Contact</label>
-        <input type="text" class="form-control" name="customerContact" placeholder="..." required>
+        <input type="text" class="form-control" id="cC" name="customerContact" placeholder="..." required>
        </div>
        <div class="col-md-12 mt-2">
         <label for="customerAddress" class="form-label">Address</label>
-        <input type="text" class="form-control" name="customerAddress" placeholder="..." required>
+        <input type="text" class="form-control" id="cAddress" name="customerAddress" placeholder="..." required>
        </div>
        <div class="col-md-12 mt-2">
         <label for="customerNote" class="form-label">Note</label>
-        <textarea class="form-control" placeholder="Leave a Note here" name="customerNote" style="height: 100px" required></textarea>
+        <textarea class="form-control" id="cNote" placeholder="Leave a Note here" name="customerNote" style="height: 100px" required></textarea>
        </div>
        <div class="col-md-12 mt-4 mb-2" style="text-align: right;">
-        <button class="btn btn-primary" type="submit" name="addCustomer">Add Product</button>
+        <button class="btn btn-primary" type="submit" name="addCustomer">Add Customer</button>
+        <button class="btn btn-secondary" onclick="clearCustomerForm()">Clear</button>
        </div>
       </div>
      </form>

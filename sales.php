@@ -132,7 +132,7 @@
                           </div>
                           <div class="input-group">
                             <div class="input-group-text">Quantity</div>
-                            <input type="number" min="0" max="<?php echo $row['quantity']; ?>" name="qty" class="form-control" id="qty<?php echo $row['id']; ?>" onkeyup="calculateSales(<?php echo $row['retail']; ?>, <?php echo $row['id']; ?>)" placeholder="0" required>
+                            <input type="number" min="0" max="<?php echo $row['quantity']; ?>" name="qty" class="form-control" id="qty<?php echo $row['id']; ?>" oninput="calculateSales(<?php echo $row['retail']; ?>, <?php echo $row['id']; ?>)" placeholder="0" required>
                           </div>
                           <div class="input-group mt-2">
                             <div class="input-group-text">Total Amount</div>
@@ -140,11 +140,12 @@
                           </div>
                           <div class="input-group mt-2">
                             <div class="input-group-text">Profit</div>
-                            <input type="number" min="0" name="profit" class="form-control" placeholder="0" readonly style="background-color: #fff;">
+                            <input type="hidden" id="purchase<?php echo $row['id']; ?>" value="<?php echo $row['purchase']; ?>">
+                            <input type="number" min="0" name="profit" id="profit<?php echo $row['id']; ?>" class="form-control" placeholder="0" readonly style="background-color: #fff;">
                           </div>
                           <div class="input-group mt-2">
                             <div class="input-group-text">Cash Given</div>
-                            <input type="number" name="tendered" min="" id="cg<?php echo $row['id']; ?>" onkeyup="calculateChangeSales(<?php echo $row['id']; ?>)" class="form-control" placeholder="0" required>
+                            <input type="number" name="tendered" min="" id="cg<?php echo $row['id']; ?>" oninput="calculateChangeSales(<?php echo $row['id']; ?>)" class="form-control" placeholder="0" required>
                           </div>
                           <div class="input-group mt-2">
                             <div class="input-group-text">Change</div>
