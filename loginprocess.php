@@ -1,4 +1,6 @@
+
 <?php
+
     session_start();
     require('config.php');
     
@@ -15,9 +17,20 @@
             header('location:dashboardsales.php');
         }
         else{?>
-        <script type="text/javascript">
-            alert("USERNAME/ PASSWORD IS INVALID");
-            window.location.href = "login.php";
+        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <script>
+            $(document).ready(function(){
+                Swal.fire({
+                icon: 'error',
+                title: 'Username and/or Password is incorrect',
+                text: 'Something went wrong!'
+                });
+                setTimeout(function(){ 
+                    window.location.href = "login.php"; }, 3000);
+                
+            })
+    
         </script>
         <?php
         }

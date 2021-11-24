@@ -113,12 +113,18 @@ $(function() {
 
 // SALES
 function calculateSales(retail, id) {
-  let qty, ta; 
+  let qty, ta, profit, purchase; 
   qty = parseFloat($('#qty'+id).val());
+  purchase = parseFloat($('#purchase'+id).val())
   retail = parseFloat(retail);
   ta = qty*retail;
   $('#ta'+id).val(ta);
   $("#cg"+id).prop('min', ta);
+
+  // calculate profit
+  profit = ta - qty*purchase;
+  $('#profit'+id).val(Math.abs(profit));
+
   calculateChangeSales(id);
 }
 
@@ -137,4 +143,38 @@ function clearr(id) {
   $('#qty'+id).val("");
   $('#cg'+id).val("");
   $('#tn'+id).val("");
+}
+
+// products
+function clearProductsForm() {
+  $('#pImg').val("");
+  $('#pName').val("");
+  $('#pQty').val("");
+  $('#pPa').val("");
+  $('#pRetail').val("");
+}
+
+// supplier
+function clearSupplierForm() {
+  $('#sName').val("");
+  $('#sCp').val("");
+  $('#sAddress').val("");
+  $('#sCn').val("");
+  $('#cNote').val("");
+}
+
+function clearSupplierFormUpdate(id) {
+  $('#sName'+id).val("");
+  $('#sCp'+id).val("");
+  $('#sAddress'+id).val("");
+  $('#sCn'+id).val("");
+  $('#sNote'+id).text("");
+}
+
+// customer
+function clearCustomerForm() {
+  $('#cName').val("");
+  $('#cC').val("");
+  $('#cAddress').val("");
+  $('#cNote').val("");
 }
