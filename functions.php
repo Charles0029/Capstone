@@ -26,6 +26,31 @@ if (isset($_POST['submitSaleForm'])) {
  header("Location: sales.php");
 }
 
+// SALESPERSON PAGE
+// transaction form
+if (isset($_POST['submitSalespersonForm'])) {
+    $id = $_POST['id'];
+    $curQty = $_POST['curQty'];
+    $curDate = $_POST['curDate'];
+    $customers = $_POST['customers'];
+    $category = $_POST['category'];
+    $pName = $_POST['pName'];
+    $retail = $_POST['retail'];
+    $qty = $_POST['qty'];
+    $ta = $_POST['ta'];
+    $profit = $_POST['profit'];
+    $tendered = $_POST['tendered'];
+    $change = $_POST['change'];
+    // newQty deduction for pick order
+    $newQty = $curQty - $qty;
+    $db_link->query("INSERT INTO sales (dates, customers, category, name, amnt, quantity, total, profit, tendered, changed) VALUES('$curDate', '$customers', '$category', '$pName', '$retail', '$qty', '$ta', '$profit', '$tendered', '$change')") or die($db_link->error);
+   
+    #update products table
+    $db_link->query("UPDATE products SET quantity='$newQty' WHERE id=$id") or die($db_link->error);
+    header("Location: sales1.php");
+   }
+
+
 // PRODUCT PAGE
 // add form
 if (isset($_POST['addProduct']) && isset($_FILES['my_image'])) {

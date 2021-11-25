@@ -88,17 +88,36 @@
                   $_SESSION['name'] = $prompt;
                   $_SESSION['quants'] = $quant;
                   $computation = 100 - (int)$quant;
+                  $_SESSION['compute'] = $computation;
                   $results = (int)$computation + (int)$quant;
                   $_SESSION['result'] = $results;
+                  
+                  include 'sendemail.php';
 
                   $db_link->query($query);
                   $update_critical_stock = "UPDATE products SET quantity = $results WHERE name = '$getname'";
-                  if ($db_link->query($update_critical_stock)== TRUE) {
-                    echo "Record updated successfully please refresh the page";
-                  } else {
-                    echo "Error updating record: " . $conn->error;
+                  if ($db_link->query($update_critical_stock)== FALSE) {
+                      echo "Error updating record: " . $conn->error;
+                  } else {?>
+                    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+                    <script>
+                        $(document).ready(function(){
+                            Swal.fire({
+                            icon: 'warning',
+                            title: 'The system detect that one of the product meet the critical stock. We updated now the inventory!',
+                            text: 'Kindly refresh this page and check your email to see the details',
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: 'Refresh Now'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                  window.location.href = "products.php";
+                                }
+                              })
+                        })
+                    </script>
+                  <?php
                   }
-                  include 'sendemail.php';
                   echo"<br>";
                 }
                 else{

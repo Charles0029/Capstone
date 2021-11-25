@@ -27,14 +27,14 @@
     $mail->addAddress(address:'sample@gmail.com');
     $mail->Subject = "Alert";
     $mail->Body = 'We would like to inform you that '.$_SESSION['name']." "."the total quantity is"." ".$_SESSION['quants']."."." ".
-    "We also update the current stock for the product the total is now"." "."(".$_SESSION['result'].")"." ".
-    " kindly check your inventory now.";
+    "We also update the current stock for the product the total is now"." ".$_SESSION['result']." ".
+    "kindly check your inventory now."." "."We added a total of"." ".$_SESSION['compute'].".";
 
     if ($mail->send())
-        echo('Error sending the email');
+        echo "Mail Sent";
 
     else
-        echo "Mail Sent";
+        echo('Error sending the email');
 
 
 ?>

@@ -24,10 +24,10 @@
                 Swal.fire({
                 icon: 'error',
                 title: 'Username and/or Password is incorrect',
-                text: 'Something went wrong!'
+                text: 'Something went wrong! Refreshing in 2 seconds...'
                 });
                 setTimeout(function(){ 
-                    window.location.href = "login.php"; }, 3000);
+                    window.location.href = "login.php"; }, 2000);
                 
             })
     

@@ -80,17 +80,36 @@
                   $_SESSION['name'] = $prompt;
                   $_SESSION['quants'] = $quant;
                   $computation = 100 - (int)$quant;
+                  $_SESSION['compute'] = $computation;
                   $results = (int)$computation + (int)$quant;
                   $_SESSION['result'] = $results;
+                  
+                  include 'sendemail.php';
 
                   $db_link->query($query);
                   $update_critical_stock = "UPDATE products SET quantity = $results WHERE name = '$getname'";
-                  if ($db_link->query($update_critical_stock)== TRUE) {
-                    echo "Record updated successfully please refresh the page";
-                  } else {
-                    echo "Error updating record: " . $conn->error;
+                  if ($db_link->query($update_critical_stock)== FALSE) {
+                      echo "Error updating record: " . $conn->error;
+                  } else {?>
+                    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+                    <script>
+                        $(document).ready(function(){
+                            Swal.fire({
+                            icon: 'warning',
+                            title: 'The system detect that one of the product meet the critical stock. We updated now the inventory!',
+                            text: 'Kindly refresh this page and check your email to see the details',
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: 'Refresh Now'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                  window.location.href = "sales1.php";
+                                }
+                              })
+                        })
+                    </script>
+                  <?php
                   }
-                  include 'sendemail.php';
                   echo"<br>";
                 }
                 else{
@@ -179,7 +198,7 @@
                             <input type="text" name="tn" id="tn<?php echo $row['id']; ?>" class="form-control" placeholder="..." required>
                           </div>
                           <div class="col-md-12 mt-4 mb-2" style="text-align: right;">
-                            <button type="submit" name="submitSaleForm" class="btn btn-primary">Add Form</button>
+                            <button type="submit" name="submitSalespersonForm" class="btn btn-primary">Add Form</button>
                             <button class="btn btn-secondary" onclick="clearr(<?php echo $row['id']; ?>)">Clear</button>
                           </div>
                         </div>
