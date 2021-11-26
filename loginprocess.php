@@ -24,7 +24,9 @@
                 Swal.fire({
                 icon: 'error',
                 title: 'Username and/or Password is incorrect',
-                text: 'Something went wrong! Refreshing in 2 seconds...'
+                text: 'Something went wrong! Refreshing in 2 seconds...',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'Okay'
                 });
                 setTimeout(function(){ 
                     window.location.href = "login.php"; }, 2000);
