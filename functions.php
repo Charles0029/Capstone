@@ -151,3 +151,31 @@ if (isset($_GET['deleteCustomer'])) {
  $db_link->query("DELETE FROM customers WHERE id=$id") or die($db_link->error);
  header("Location: customers.php");
 }
+
+
+
+// FORM PAGE
+//add orders
+if (isset($_POST['submitOrderForm'])) {
+    $name = $_POST['name'];
+    $fbname = $_POST['fbname'];
+    $concern = $_POST['concern'];
+    $question = $_POST['question'];
+    $number = $_POST['number'];
+    $extranumber = $_POST['extranumber'];
+    $address = $_POST['address'];
+    $landmark = $_POST['landmark'];
+    $province = $_POST['province'];
+    $city = $_POST['city'];
+    $barangay = $_POST['barangay'];
+    $bottles = $_POST['bottles'];
+    $receivecall = $_POST['receivecall'];
+    $mop = $_POST['mop'];
+    $noteforDelivery = $_POST['noteforDelivery'];
+
+    $db_link->query("INSERT INTO orders (name, fbname, concern, question, phone, extraphone, address, landmark, province, city, barangay, bottles, receivecall, mop, note) VALUES('$name', '$fbname', '$concern', '$question', '$number', '$extranumber', '$address', '$landmark', '$province', '$city', '$barangay', '$bottles', '$receivecall', '$mop', '$noteforDelivery')") or die($db_link->error);
+
+    echo"<script>alert('Successfully Submitted your Order')</script>";
+
+    header("Location: form.php");
+   }
