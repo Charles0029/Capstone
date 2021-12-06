@@ -21,7 +21,7 @@
     <a href="dashboard.php" class="nav_logo"> <i class='bx bx-layer nav_logo-icon'></i> <span class="nav_logo-name">CV-GFOXX</span> </a>
     <div class="nav_list">
      <a href="dashboard.php" class="nav_link "> <i class='bx bx-grid-alt nav_icon'></i> <span class="nav_name">Dashboard</span> </a>
-     <a href="sales.php" class="nav_link"> <i class='bx bx-cart nav_icon'></i> <span class="nav_name">Sales</span> </a>
+     <a href="sales.php" class="nav_link"> <i class='bx bx-cart-alt nav_icon'></i></i> <span class="nav_name">Sales</span> </a>
      <a href="products.php" class="nav_link"> <i class='bx bx-food-menu nav_icon'></i> <span class="nav_name">Products</span> </a>
      <a href="suppliers.php" class="nav_link"> <i class='bx bx-user-pin nav_icon'></i> <span class="nav_name">Suppliers</span> </a>
      <a href="customers.php" class="nav_link"> <i class='bx bx-user nav_icon'></i> <span class="nav_name">Customers</span> </a>
@@ -43,11 +43,59 @@
     <span id="LiveTime" class="badge bg-warning text-dark" style="font-size: 20px;"></span>
    </div>
   </div>
+  <?php
+  // require('config.php');
+  // $queryToProducts = "SELECT * FROM products";
+  // $result = mysqli_query($db_link, $query);
+
+  ?>
+
+  <div class="container mt-5" style="overflow-x: auto;">
+   <div style="width: 100%; min-width: 800px;">
+    <canvas id="myChart"></canvas>
+   </div>
+  </div>
+
  </div>
 
  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
  <script src="js/app.js"></script>
+ <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+ <script>
+  let months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+  const d = new Date();
+  let month = months[d.getMonth()]; //get the current mont by index
+  let labels = []; // months for graph
+  labels.push(name)
+  const data = {
+   labels: labels,
+   datasets: [{
+     label: 'My First dataset',
+     backgroundColor: 'rgb(255, 99, 132)',
+     borderColor: 'rgb(255, 99, 132)',
+     data: [10],
+    },
+    {
+     label: 'My 2nd dataset',
+     backgroundColor: 'rgb(0, 0, 132)',
+     borderColor: 'rgb(0, 0, 132)',
+     data: [101],
+    }
+   ]
+  };
+  const config = {
+   type: 'line',
+   data: data,
+   options: {}
+  };
+  // === include 'setup' then 'config' above ===
+
+  const myChart = new Chart(
+   document.getElementById('myChart'),
+   config
+  );
+ </script>
 </body>
 
 </html>

@@ -20,7 +20,11 @@ if (isset($_POST['submitSaleForm'])) {
  // newQty deduction for pick order
  $newQty = $curQty - $qty;
  $db_link->query("INSERT INTO sales (dates, customers, category, name, amnt, quantity, total, profit, tendered, changed) VALUES('$curDate', '$customers', '$category', '$pName', '$retail', '$qty', '$ta', '$profit', '$tendered', '$change')") or die($db_link->error);
-
+ // update the data qty regards to date(month) in salesreport
+ $date = new DateTime("now", new DateTimeZone('Asia/Manila'));
+ $month = $date->format('F');
+ $month = strtolower($month);
+ $db_link->query("UPDATE salesreport SET $month='$qty' ") or die($db_link->error);
  #update products table
  $db_link->query("UPDATE products SET quantity='$newQty' WHERE id=$id") or die($db_link->error);
  header("Location: sales.php");
@@ -51,7 +55,10 @@ if (isset($_POST['addProduct']) && isset($_FILES['my_image'])) {
   $new_img_name = uniqid("IMG-", true) . '.' . $img_ex_lc;
   $img_upload_path = 'uploads/' . $new_img_name;
   move_uploaded_file($tmp_name, $img_upload_path);
+
   $db_link->query("INSERT INTO products (category, name, quantity, purchase, retail, supplier, img_url) VALUES('$productCategory', '$productName', '$productQty', '$productPurchaseAmount', '$productRetail', '$productSupplier', '$new_img_name')") or die($db_link->error);
+  // saving the added product to salesreport table
+  $db_link->query("INSERT INTO salesreport (nameOfProduct) VALUES ('$productName')") or die($db_link->error);
   header('location: products.php');
  }
 }
@@ -66,6 +73,8 @@ if (isset($_POST['updateFormProducts'])) {
  $retail = $_POST['retail'];
  $suppliers = $_POST['suppliers'];
  $db_link->query("UPDATE products SET category='$category', name='$name', quantity='$qty', purchase='$pa', retail='$retail', supplier='$suppliers' WHERE id=$id") or die($db_link->error);
+ // edit the name in salesreport
+ $db_link->query("UPDATE salesreport SET nameOfProduct='$name' WHERE id=$id") or die($db_link->error);
  header("Location: products.php");
 }
 
@@ -73,6 +82,7 @@ if (isset($_POST['updateFormProducts'])) {
 if (isset($_GET['delete'])) {
  $id = $_GET['delete'];
  $db_link->query("DELETE FROM products WHERE id=$id") or die($db_link->error);
+ $db_link->query("DELETE FROM salesreport WHERE id=$id") or die($db_link->error);
  header("Location: products.php");
 }
 
