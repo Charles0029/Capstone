@@ -7,7 +7,7 @@
 
     $mail = new PHPMailer;
 
-    $email = "charlesventures2025@gmail.com";
+    $email = "vhoenix117@gmail.com";
     $name = "Critical Stock Meet";
 
     //SMTP Settings
@@ -24,11 +24,10 @@
     //Email Settings
     $mail->isHTML(true);
     $mail->setFrom($email, $name);
-    $mail->addAddress(address:'charlesventures2025@gmail.com');
+    $mail->addAddress(address:'vhoenix117@gmail.com');
     $mail->Subject = "Alert";
-    $mail->Body = 'We would like to inform you that '.$_SESSION['name']." "."the total quantity is"." ".$_SESSION['quants']."."." ".
-    "We also update the current stock for the product the total is now"." ".$_SESSION['result']." ".
-    "kindly check your inventory now."." "."We added a total of"." ".$_SESSION['compute'].".";
+    $mail->Body = 'We would like to inform you that '.$_SESSION['name']." "."the total quantity now is"." ".$_SESSION['quants']."."." ".
+    "Please make sure to add more stocks or request immediately in your supplier."." "."Thank you have nice day";
 
     if ($mail->send())
         echo "Mail Sent";

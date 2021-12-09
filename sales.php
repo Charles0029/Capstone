@@ -26,6 +26,7 @@
           <a href="suppliers.php" class="nav_link"> <i class='bx bx-user-pin nav_icon'></i> <span class="nav_name">Suppliers</span> </a>
           <a href="customers.php" class="nav_link"> <i class='bx bx-user nav_icon'></i> <span class="nav_name">Customers</span> </a>
           <a href="salesReport.php" class="nav_link"> <i class='bx bx-bar-chart-alt-2 nav_icon'></i> <span class="nav_name">Sales Report</span> </a>
+          <a href="stocktaking.php" class="nav_link"><i class='bx bx-bell nav_icon'></i> <span class="nav_name">Stocks Taking</span> </a>
         </div>
       </div>
       <a href="login.php" class="nav_link"> <i class='bx bx-log-out nav_icon'></i> <span class="nav_name">SignOut</span> </a>
@@ -89,31 +90,22 @@
                   $_SESSION['result'] = $results;
                   
                   include 'sendemail.php';
-
-                  $db_link->query($query);
-                  $update_critical_stock = "UPDATE products SET quantity = $results WHERE name = '$getname'";
-                  if ($db_link->query($update_critical_stock)== FALSE) {
-                      echo "Error updating record: " . $conn->error;
-                  } else {?>
+                  ?>
                     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
                     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
                     <script>
                         $(document).ready(function(){
                             Swal.fire({
                             icon: 'warning',
-                            title: 'The system detect that one of the product meet the critical stock. We updated now the inventory!',
-                            text: 'Kindly refresh this page and check your email to see the details',
+                            title: 'The system detect that one of the product meet the critical stock.',
+                            text: 'Check your email to see the details',
                             confirmButtonColor: '#3085d6',
-                            confirmButtonText: 'Refresh Now'
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                  window.location.href = "sales.php";
-                                }
-                              })
+                            confirmButtonText: 'Okay'
+                            })
                         })
                     </script>
                   <?php
-                  }
+             
                   echo"<br>";
                 }
                 else{
