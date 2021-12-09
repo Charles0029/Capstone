@@ -164,12 +164,14 @@
 
     
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="js/jspdf.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="js/FileSaver.js"></script>
+
+    <!--<script src="js/FileSaver.js"></script-->
 
 
 
-    <!--Button Js Function-->
+    <!--Button Js Function for Forms-->
     <script>
         $(document).ready(function(){
             $('#check').click(function(){
@@ -223,7 +225,7 @@
             })
 
 
-            $('#receipt').click(function(){
+            $('#receipt').click(function genPDF(){
                 name = $('#names').val()
                 fbname = $('#fb').val()
                 concern = $('#concerns').val()
@@ -240,29 +242,52 @@
                 mop = $("input[name='mop']:checked").val();
                 note = $('#note').val()
 
-                var blob = new Blob(
-                ["Customer's order details \n \n" + 
-                "-- Product Name: Spiriluna -- \n" +
-                "-- Customer Name: " + name  + " -- \n" +
-                "-- Customer Fb Name: " + fbname  + " -- \n" +
-                "-- Customer Concern: " + concern  + " -- \n" +
-                "-- Customer Question: " + question  + " -- \n" +
-                "-- Customer Phone Number: " + phone  + " -- \n" +
-                "-- Customer Extra Number: " + extra  + " -- \n" +
-                "-- Customer Address: " + address  + " -- \n" +
-                "-- Customer Landmark: " + landmark  + " -- \n" +
-                "-- Customer Province: " + province  + " -- \n" +
-                "-- Customer City: " + city  + " -- \n" +
-                "-- Customer Barangay: " + barangay  + " -- \n" +
-                "-- Customer Order Details: " + bottles  + " -- \n" +
-                "-- Customer Receive Call: " + receive  + " -- \n" +
-                "-- Customer Mode of Payment: " + mop  + " -- \n" +
-                "-- Customer Note: " + note  + " --"
-                ],
 
-                {type: "text/plain;charset=utf-8"});
+                var doc = new jsPDF();
+                doc.text(80,20,"Customer's Order:");
 
-                saveAs(blob, "receipt.txt")
+                doc.text(20,40,"NAME: " + name);
+                doc.text(20,50, "FB NAME: " +  fbname);
+                doc.text(20,60, "CONCERN: " +  concern);
+                doc.text(20,70, "QUESTION: " +  question);
+                doc.text(20,80,"PHONE NUMBER: " +   phone);
+                doc.text(20,90, "EXTRA NUMBER: " +  extra);
+                doc.text(20,100, "ADDRESS: " +  address);
+                doc.text(20,110,"LANDMARK: " +   landmark);
+                doc.text(20,120, "PROVINCE: " +  province);
+                doc.text(20,130, "CITY: " +  city);
+                doc.text(20,140 , "BARANGAY: " +  barangay);
+                doc.text(20,150, "ORDER: " +  bottles);
+                doc.text(20,160, "RECEIVE CALL: " +  receive);
+                doc.text(20,170, "MODE OF PAYMENT: " +  mop);
+                doc.text(20,180, "NOTE: " +  note);
+                doc.save('Customer Receipt: '+name+'.pdf');
+
+                // var blob = new Blob(
+                // ["Customer's order details \n \n" + 
+                // "-- Product Name: Spiriluna -- \n" +
+                // "-- Customer Name: " + name  + " -- \n" +
+                // "-- Customer Fb Name: " + fbname  + " -- \n" +
+                // "-- Customer Concern: " + concern  + " -- \n" +
+                // "-- Customer Question: " + question  + " -- \n" +
+                // "-- Customer Phone Number: " + phone  + " -- \n" +
+                // "-- Customer Extra Number: " + extra  + " -- \n" +
+                // "-- Customer Address: " + address  + " -- \n" +
+                // "-- Customer Landmark: " + landmark  + " -- \n" +
+                // "-- Customer Province: " + province  + " -- \n" +
+                // "-- Customer City: " + city  + " -- \n" +
+                // "-- Customer Barangay: " + barangay  + " -- \n" +
+                // "-- Customer Order Details: " + bottles  + " -- \n" +
+                // "-- Customer Receive Call: " + receive  + " -- \n" +
+                // "-- Customer Mode of Payment: " + mop  + " -- \n" +
+                // "-- Customer Note: " + note  + " --"
+                // ],
+
+                // {type: "text/plain;charset=utf-8"});
+
+                // saveAs(blob, "receipt.txt")
+
+        
             })
             
          
